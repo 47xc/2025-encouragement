@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>2025加油！</title>
+    <!-- 添加分享所需的元标签 -->
+    <meta property="og:title" content="2025加油！">
+    <meta property="og:description" content="点击获取你的专属鼓励">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Microsoft YaHei', sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        #message {
+            font-size: 32px;  /* 更大的字体 */
+            font-weight: bold;  /* 加粗 */
+            color: #333;
+            text-align: center;
+            max-width: 80%;
+            margin-bottom: 30px;  /* 添加底部间距 */
+            min-height: 80px;  /* 固定高度防止闪烁 */
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .share-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .share-button {
+            padding: 8px 15px;
+            font-size: 14px;
+            background-color: #1890ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="message"></div>
+    <button onclick="showEncouragement()">2025加油！</button>
+    <div class="share-buttons">
+        <button class="share-button" onclick="shareToWeChat()">分享到微信</button>
+        <button class="share-button" onclick="copyLink()">复制链接</button>
+    </div>
+
+    <script>
+        const encouragements = [
+            "相信自己，你可以做到！",
+            "今天的努力是明天的收获",
+            "加油，前方的路由你来开创！",
+            "困难是暂时的，但坚持是永��的",
+            "每一个今天都是成功路上的一步",
+            "别忘了，你比想象中更强大",
+            "勇敢追梦，全力以赴！",
+            "成功不是偶然，而是积累的结果",
+            "坚持下去，你离目标越来越近了",
+            "记住，你并不是一个人在战斗"
+        ];
+
+        // 页面加载时显示一条鼓励语
+        window.onload = showEncouragement;
+
+        function showEncouragement() {
+            const messageDiv = document.getElementById('message');
+            const randomIndex = Math.floor(Math.random() * encouragements.length);
+            messageDiv.style.opacity = 0;
+            
+            setTimeout(() => {
+                messageDiv.textContent = encouragements[randomIndex];
+                messageDiv.style.opacity = 1;
+                messageDiv.style.transition = 'opacity 0.5s';
+            }, 100);
+        }
+
+        function shareToWeChat() {
+            alert('请截图或复制链接分享到微信');
+        }
+
+        function copyLink() {
+            const currentUrl = window.location.href;
+            navigator.clipboard.writeText(currentUrl).then(() => {
+                alert('链接已复制到剪贴板！');
+            }).catch(err => {
+                alert('复制失败，请手动复制地址栏链接');
+            });
+        }
+    </script>
+</body>
+</html>
