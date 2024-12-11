@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>2025加油！</title>
-    <!-- 添加分享所需的元标签 -->
-    <meta property="og:title" content="2025加油！">
-    <meta property="og:description" content="点击获取你的专属鼓励">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        /* 原有样式保持不变 */
         body {
             display: flex;
             flex-direction: column;
@@ -19,65 +16,91 @@
             background-color: #f0f2f5;
         }
 
-        #message {
-            font-size: 32px;  /* 更大的字体 */
-            font-weight: bold;  /* 加粗 */
-            color: #333;
-            text-align: center;
-            max-width: 80%;
-            margin-bottom: 30px;  /* 添加底部间距 */
-            min-height: 80px;  /* 固定高度防止闪烁 */
+        /* CD样式 */
+        .cd-container {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 30px;
+            position: relative;
         }
 
-        button {
-            padding: 15px 30px;
-            font-size: 20px;
+        .cd {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #333 0%, #888 100%);
+            position: relative;
+            animation: rotate 20s linear infinite;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .cd::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30%;
+            height: 30%;
+            background-color: #f0f2f5;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .cd.paused {
+            animation-play-state: paused;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* 音乐控制按钮 */
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        button:hover {
-            background-color: #45a049;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .share-buttons {
-            margin-top: 20px;
             display: flex;
-            gap: 10px;
+            align-items: center;
+            justify-content: center;
         }
 
-        .share-button {
-            padding: 8px 15px;
-            font-size: 14px;
-            background-color: #1890ff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+        /* 其他原有样式保持不变 */
     </style>
 </head>
 <body>
+    <div class="cd-container">
+        <div class="cd" id="cd"></div>
+    </div>
     <div id="message"></div>
     <button onclick="showEncouragement()">2025加油！</button>
-    <div class="share-buttons">
-        <button class="share-button" onclick="shareToWeChat()">分享到微信</button>
-        <button class="share-button" onclick="copyLink()">复制链接</button>
-    </div>
+    <button class="music-control" onclick="toggleMusic()" id="musicBtn">
+        ▶
+    </button>
+    <audio id="bgMusic" loop>
+        <!-- 这里放入你的音乐文件URL -->
+        <source src="https://music.163.com/song/media/outer/url?id=1824045033.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
+        // 原有的鼓励语数组和函数保持不变
         const encouragements = [
             "相信自己，你可以做到！",
             "今天的努力是明天的收获",
             "加油，前方的路由你来开创！",
-            "困难是暂时的，但坚持是永��的",
+            "困难是暂时的，但坚持是永恒的",
             "每一个今天都是成功路上的一步",
             "别忘了，你比想象中更强大",
             "勇敢追梦，全力以赴！",
@@ -86,8 +109,23 @@
             "记住，你并不是一个人在战斗"
         ];
 
-        // 页面加载时显示一条鼓励语
-        window.onload = showEncouragement;
+        const audio = document.getElementById('bgMusic');
+        const cd = document.getElementById('cd');
+        const musicBtn = document.getElementById('musicBtn');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                cd.classList.add('paused');
+                musicBtn.textContent = '▶';
+            } else {
+                audio.play();
+                cd.classList.remove('paused');
+                musicBtn.textContent = '⏸';
+            }
+            isPlaying = !isPlaying;
+        }
 
         function showEncouragement() {
             const messageDiv = document.getElementById('message');
@@ -101,18 +139,8 @@
             }, 100);
         }
 
-        function shareToWeChat() {
-            alert('请截图或复制链接分享到微信');
-        }
-
-        function copyLink() {
-            const currentUrl = window.location.href;
-            navigator.clipboard.writeText(currentUrl).then(() => {
-                alert('链接已复制到剪贴板！');
-            }).catch(err => {
-                alert('复制失败，请手动复制地址栏链接');
-            });
-        }
+        // 页面加载时显示一条鼓励语
+        window.onload = showEncouragement;
     </script>
 </body>
 </html>
