@@ -90,8 +90,7 @@
         ▶
     </button>
     <audio id="bgMusic" loop>
-        <!-- 这里放入你的音乐文件URL -->
-        <source src="https://music.163.com/song/media/outer/url?id=1824045033.mp3" type="audio/mpeg">
+        <source src="music/background.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -120,7 +119,10 @@
                 cd.classList.add('paused');
                 musicBtn.textContent = '▶';
             } else {
-                audio.play();
+                audio.play().catch(function(error) {
+                    console.log("播放失败:", error);
+                    alert("音乐播放失败，请检查音频文件或刷新页面重试");
+                });
                 cd.classList.remove('paused');
                 musicBtn.textContent = '⏸';
             }
