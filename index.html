@@ -2,122 +2,116 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>2025加油！</title>
+    <title>2025新年许愿墙</title>
     <style>
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             font-family: 'Microsoft YaHei', sans-serif;
             background-color: #f0f2f5;
+            padding: 20px;
         }
 
-        /* CD和指针容器 */
+        /* 标题样式 */
+        .title {
+            font-size: 48px;
+            color: #e74c3c;
+            text-align: center;
+            margin: 30px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* CD播放器样式 */
         .player-container {
-            width: 300px;
-            height: 300px;
-            position: relative;
-            margin-bottom: 50px; /* 增加与文字的距离 */
-        }
-
-        /* CD样式 */
-        .cd {
             width: 200px;
             height: 200px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #333 0%, #888 100%);
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: rotate 20s linear infinite;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            position: fixed;
+            top: 20px;
+            right: 20px;
         }
 
-        .cd::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 30%;
-            height: 30%;
-            background-color: #f0f2f5;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        /* 指针样式 */
-        .tonearm {
-            width: 100px;
-            height: 20px;
-            background: #666;
-            position: absolute;
-            top: 50px;
-            right: 50px;
-            transform-origin: right center;
-            transform: rotate(-40deg);
-            transition: transform 0.5s ease;
-            z-index: 2;
-        }
-
-        .tonearm::before {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 50%;
-            width: 20px;
-            height: 20px;
-            background: #888;
-            border-radius: 50%;
-            transform: translateY(-50%);
-        }
-
-        /* 指针抬起状态 */
-        .tonearm.playing {
-            transform: rotate(0deg);
-        }
-
-        /* CD停止转动状态 */
-        .cd.paused {
-            animation-play-state: paused;
-        }
-
-        @keyframes rotate {
-            from { transform: translateX(-50%) rotate(0deg); }
-            to { transform: translateX(-50%) rotate(360deg); }
-        }
-
-        /* 消息样式 */
-        #message {
-            font-size: 36px; /* 更大的字体 */
-            font-weight: bold;
-            color: #333;
-            text-align: center;
-            max-width: 80%;
-            margin: 40px 0; /* 增加上下间距 */
-            min-height: 80px;
-        }
-
-        /* 按钮样式 */
-        button {
-            padding: 20px 40px; /* 更大的按钮 */
-            font-size: 24px; /* 更大的字体 */
-            background-color: #4CAF50;
-            color: white;
-            border: none;
+        /* 输入区域样式 */
+        .wish-input-container {
+            background: white;
+            padding: 20px;
             border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 80%;
+            max-width: 600px;
+            margin: 20px 0;
+        }
+
+        .input-group {
+            margin: 10px 0;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        /* 提交按钮 */
+        .submit-btn {
+            background-color: #e74c3c;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
             cursor: pointer;
             transition: all 0.3s;
-            margin: 20px 0; /* 增加间距 */
         }
 
-        button:hover {
-            background-color: #45a049;
+        .submit-btn:hover {
+            background-color: #c0392b;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* 许愿墙样式 */
+        .wish-wall {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px 0;
+        }
+
+        .wish-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .wish-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .wish-text {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .wish-name {
+            font-size: 14px;
+            color: #666;
+            text-align: right;
+            font-style: italic;
         }
 
         /* 音乐控制按钮 */
@@ -129,74 +123,106 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            font-size: 20px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
-    <div class="player-container">
-        <div class="tonearm" id="tonearm"></div>
-        <div class="cd" id="cd"></div>
+    <h1 class="title">2025新年愿望墙<br>好运成真！</h1>
+
+    <!-- 许愿输入区域 -->
+    <div class="wish-input-container">
+        <div class="input-group">
+            <input type="text" id="name" placeholder="请输入你的名字" maxlength="20">
+        </div>
+        <div class="input-group">
+            <textarea id="wish" placeholder="写下你的新年愿望..." maxlength="100"></textarea>
+        </div>
+        <button class="submit-btn" onclick="submitWish()">许下愿望</button>
     </div>
-    <div id="message"></div>
-    <button onclick="showEncouragement()">2025加油！</button>
+
+    <!-- 许愿墙展示区域 -->
+    <div class="wish-wall" id="wishWall"></div>
+
+    <!-- 音乐播放器 -->
     <button class="music-control" onclick="toggleMusic()" id="musicBtn">▶</button>
     <audio id="bgMusic" loop>
         <source src="music/background.mp3" type="audio/mpeg">
     </audio>
 
     <script>
+        // 音乐控制
         const audio = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('musicBtn');
-        const cd = document.getElementById('cd');
-        const tonearm = document.getElementById('tonearm');
         let isPlaying = false;
 
         function toggleMusic() {
             if (isPlaying) {
                 audio.pause();
-                cd.classList.add('paused');
-                tonearm.classList.remove('playing');
                 musicBtn.textContent = '▶';
             } else {
                 audio.play().catch(function(error) {
                     console.log("播放失败:", error);
-                    alert("音乐播放失败，请检查音频文件或刷新页面重试");
                 });
-                cd.classList.remove('paused');
-                tonearm.classList.add('playing');
                 musicBtn.textContent = '⏸';
             }
             isPlaying = !isPlaying;
         }
 
-        const encouragements = [
-            "相信自己，你可以做到！",
-            "今天的努力是明天的收获",
-            "加油，前方的路由你来开创！",
-            "困难是暂时的，但坚持是永恒的",
-            "每一个今天都是成功路上的一步",
-            "别忘了，你比想象中更强大",
-            "勇敢追梦，全力以赴！",
-            "成功不是偶然，而是积累的结果",
-            "坚持下去，你离目标越来越近了",
-            "记住，你并不是一个人在战斗"
-        ];
+        // 许愿功能
+        let wishes = [];
 
-        function showEncouragement() {
-            const messageDiv = document.getElementById('message');
-            const randomIndex = Math.floor(Math.random() * encouragements.length);
-            messageDiv.style.opacity = 0;
+        function submitWish() {
+            const nameInput = document.getElementById('name');
+            const wishInput = document.getElementById('wish');
             
-            setTimeout(() => {
-                messageDiv.textContent = encouragements[randomIndex];
-                messageDiv.style.opacity = 1;
-                messageDiv.style.transition = 'opacity 0.5s';
-            }, 100);
+            if (!nameInput.value.trim() || !wishInput.value.trim()) {
+                alert('请输入名字和愿望！');
+                return;
+            }
+
+            const newWish = {
+                name: nameInput.value.trim(),
+                wish: wishInput.value.trim(),
+                time: new Date().toLocaleString()
+            };
+
+            wishes.unshift(newWish); // 添加到数组开头
+            updateWishWall();
+            
+            // 清空输入
+            nameInput.value = '';
+            wishInput.value = '';
+            
+            alert('许愿成功！愿望已经被记录在墙上啦～');
         }
 
-        // 页面加载时显示一条鼓励语
-        window.onload = showEncouragement;
+        function updateWishWall() {
+            const wishWall = document.getElementById('wishWall');
+            wishWall.innerHTML = wishes.map(wish => `
+                <div class="wish-card">
+                    <div class="wish-text">${wish.wish}</div>
+                    <div class="wish-name">——${wish.name}</div>
+                </div>
+            `).join('');
+        }
+
+        // 示例愿望
+        const exampleWishes = [
+            { name: "小明", wish: "希望在2025年能够找到理想的工作！" },
+            { name: "小红", wish: "祝愿家人健康，万事如意！" },
+            { name: "小华", wish: "2025年要去环游世界！" }
+        ];
+
+        // 页面加载时显示示例愿望
+        window.onload = function() {
+            wishes = exampleWishes;
+            updateWishWall();
+        };
     </script>
 </body>
 </html>
